@@ -1,0 +1,146 @@
+1 – 
+SELECT nom, annéeNaiss 
+FROM artiste  
+WHERE annéeNaiss < 1950
+
+2 – 
+SELECT titre 
+FROM film  
+WHERE genre = "drame"
+
+3 – 
+SELECT nomRôle 
+FROM role r INNER JOIN artiste a 
+ON r.idActeur = a.idArtiste 
+WHERE nom = "Willis"
+GROUP BY = "nomRôle"
+
+4 – 
+SELECT idRéalisateur 
+FROM film 
+WHERE titre = "Memento"
+
+5 –
+SELECT note 
+FROM notation NATURAL JOIN film  
+WHERE titre = "Fargo"
+
+6 –
+SELECT nom, prénom 
+FROM artiste a INNER JOIN role r 
+ON a.idArtiste = r.idActeur 
+WHERE nomRôle = "Chewbacca" 
+GROUP BY nom, prénom
+
+7 –
+SELECT titre 
+FROM film f, role r, artiste a 
+WHERE f.idFilm = r.idFilm 
+AND r.idActeur = a.idArtiste 
+AND r.nomRôle = "John McClane" 
+AND a.nom = "Willis"
+
+8 – 
+SELECT nom FROM artiste a, film f, role r  
+WHERE a.idArtiste = r.idActeur 
+AND r.idFilm = f.idFilm 
+AND titre = 'Sueurs froides'
+
+9 –
+SELECT titre 
+FROM film f, notation n, internaute i 
+WHERE f.idFilm = n.idFilm 
+AND n.email = i.email 
+AND prénom = "Prénom0" 
+AND nom = "Nom0"
+
+10 - 
+//SELECT Titre 
+FROM film 
+WHERE idRéalisateur 
+IN (SELECT idArtiste FROM artiste WHERE nom = 'McTiernan') 
+AND idFilm 
+IN (SELECT idFilm FROM Role WHERE idActeur IN (SELECT idArtiste FROM artiste WHERE nom = 'Willis'))//
+
+11 -
+SELECT titre, nomRôle 
+FROM film, role, artiste
+WHERE film.idFilm = role.idFilm
+AND role.idActeur = artiste.idArtiste
+AND nom = "Allen"
+
+12 -
+SELECT nom, titre, nomRôle
+FROM film, role, artiste
+WHERE film.idFilm = role.idFilm
+AND role.idActeur = artiste.idArtiste
+AND film.idRéalisateur = artiste.idArtiste
+
+13 -
+SELECT titre
+FROM film f, artiste a, role r
+WHERE f.idRéalisateur = a.idArtiste
+AND nom = "Tarantino"
+INTERSECT
+SELECT titre 
+FROM film f, artiste a, role r 
+WHERE r.idActeur = a.idArtiste
+and nom <> "Tarantino"
+
+14 -
+
+15-
+SELECT titre
+FROM film f, artiste a, role r
+WHERE f.idRéalisateur = a.idArtiste
+AND nom = "Hitchcock"
+INTERSECT
+SELECT titre 
+FROM film f, artiste a, role r 
+WHERE r.idActeur = a.idArtiste
+and nom <> "Stewart"
+
+16 - 
+
+17 -
+SELECT titre
+FROM Film
+WHERE idFilm NOT IN (SELECT idFilm FROM Rôle)
+
+18 – 
+SELECT titre
+From (film NATURAL JOIN notation) INNER JOIN internaute ON notation.email = internaute.email
+WHERE nom = "Nom0"
+AND prénom = "Prénom0"
+
+19 – 
+SELECT nom, prénom
+FROM (film RIGHT OUTER JOIN role
+ON role.idActeur = film.idRéalisateur) 
+INNER JOIN artiste 
+ON artiste.idArtiste = role.idActeur
+WHERE idRéalisateur IS NULL
+
+20 – 
+SELECT ROUND(AVG(note), 0)
+FROM film NATURAL JOIN notation
+WHERE titre = "Memento"
+
+21 – 
+SELECT  idRéalisateur, nom, prénom, COUNT(idFilm) as "nb films"
+FROM film, artiste
+WHERE idRéalisateur = idArtiste
+GROUP BY idRéalisateur
+ORDER BY idRéalisateur
+
+22 – 
+SELECT  nom, prénom, COUNT(idFilm) as "nb films"
+FROM film, artiste
+WHERE idRéalisateur = idArtiste
+GROUP BY idRéalisateur
+HAVING COUNT(idFilm) >= 2
+
+23 –
+SELECT titre
+FROM film NATURAL JOIN notation
+WHERE note > 7
